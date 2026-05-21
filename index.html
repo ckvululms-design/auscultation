@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聽聽毛小孩的心音 - 免費心音篩檢活動</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FFFDF9; /* Warm warm white from the poster */
+        }
+        /* Custom Scrollbar for tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f8f6f0; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2af24; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #c6941b; 
+        }
+        /* Modal fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-animate {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        /* Button hover transitions */
+        .btn-transition {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col relative">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-[#FFFDF9] z-50 flex flex-col items-center justify-center transition-opacity duration-300">
+        <!-- Heartbeat Animation (Theme color) -->
+        <div class="relative flex items-center justify-center mb-6">
+            <span class="animate-ping absolute inline-flex h-16 w-16 rounded-full bg-amber-400 opacity-75"></span>
+            <div class="relative rounded-full p-4 bg-[#F8C12F] text-slate-800 shadow">
+                <svg class="w-10 h-10 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+        </div>
+        <h2 class="text-xl font-bold text-slate-700 tracking-wider">聽聽心音，守護健康中...</h2>
+    </div>
+
+    <!-- Modals Container (Injected dynamically via JS) -->
+    <div id="modal-container"></div>
+
+    <!-- Frontend View -->
+    <div id="frontend-view" class="flex-grow flex flex-col hidden">
+        <!-- Header / Hero (Sunflower Yellow & Navy theme) -->
+        <header class="bg-[#F8C12F] text-slate-800 py-10 px-4 shadow-md rounded-b-[2.5rem] relative overflow-hidden">
+            <!-- Decorative circle backgrounds -->
+            <div class="absolute top-[-50px] left-[-50px] w-32 h-32 bg-white/25 rounded-full blur-xl"></div>
+            <div class="absolute bottom-[-50px] right-[-50px] w-48 h-48 bg-amber-500/10 rounded-full blur-2xl"></div>
+
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <p class="text-sm md:text-base font-black tracking-widest text-slate-700 mb-1 uppercase">凝視犬貓專科醫院 周年慶活動</p>
+                <h1 class="text-3xl md:text-5xl font-black mb-3 tracking-tight text-slate-900 flex items-center justify-center gap-2">
+                    <span>聽聽毛小孩的心音</span>
+                    <span class="text-red-500">❤️</span>
+                </h1>
+                <p class="text-lg md:text-xl font-bold opacity-90 text-slate-800 mb-4">免費心音篩檢活動 報名系統</p>
+                
+                <div class="inline-flex items-center gap-2 bg-slate-900 text-[#F8C12F] px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-sm">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="system-status-badge">系統開放中</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
+            
+            <!-- Poster Flow Guide (海報篩檢六步驟) -->
+            <section class="mb-10 bg-white rounded-2xl p-6 border-2 border-amber-100 shadow-sm">
+                <div class="flex items-center gap-2 mb-4 border-b border-amber-100 pb-3">
+                    <span class="text-2xl">📋</span>
+                    <h3 class="text-lg font-bold text-slate-800">活動篩檢核心流程</h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 text-center">
+                        <div class="text-lg font-bold text-slate-700 mb-1">❶ 報到</div>
+                        <p class="text-xs text-slate-500">填寫基本資料與完成掛號</p>
+                    </div>
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 text-center">
+                        <div class="text-lg font-bold text-slate-700 mb-1">❷ 初步評估</div>
+                        <p class="text-xs text-slate-500">體重、體態評分、肌肉評分、情緒狀態評分</p>
+                    </div>
+                    <div class="bg-amber-100/70 p-3 rounded-xl border border-amber-300 text-center relative ring-2 ring-amber-400">
+                        <span class="absolute top-0 right-0 bg-red-500 text-white text-[9px] px-1 rounded-bl">核心</span>
+                        <div class="text-lg font-bold text-amber-900 mb-1">❸ 心音聽診</div>
+                        <p class="text-xs text-amber-800 font-medium">獸醫師專業聽診</p>
+                    </div>
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 text-center">
+                        <div class="text-lg font-bold text-slate-700 mb-1">❹ 結果說明</div>
+                        <p class="text-xs text-slate-500">居家衛教</p>
+                    </div>
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 text-center">
+                        <div class="text-lg font-bold text-slate-700 mb-1">❺ 後續預約</div>
+                        <p class="text-xs text-slate-500">必要個案進一步診療</p>
+                    </div>
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 text-center">
+                        <div class="text-lg font-bold text-slate-700 mb-1">❻ 衛教諮詢</div>
+                        <p class="text-xs text-slate-500">基本心臟病知識答疑</p>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                    <strong>⚠️ 重要說明：</strong>本活動為心臟疾病篩檢 (screening)，不等同完整診斷 (diagnosis)；如有異常，需進一步檢查確認。
+                </div>
+            </section>
+
+            <!-- Closed Message (Hidden by default) -->
+            <div id="closed-message" class="hidden bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow-sm mb-8">
+                <h3 class="text-xl font-bold text-red-700 mb-2">報名已截止</h3>
+                <p class="text-red-600">感謝您的支持，本次「聽聽毛小孩的心音」免費篩檢活動已全數截止報名。</p>
+            </div>
+
+            <!-- Booking Section -->
+            <div id="booking-section">
+                <!-- Date Selector (Poster Yellow & Navy Style) -->
+                <div class="flex justify-center space-x-4 mb-8">
+                    <button id="tab-day1" class="date-tab px-6 py-3 rounded-full font-bold text-lg btn-transition bg-[#F8C12F] text-slate-800 shadow-md ring-2 ring-[#F8C12F]" data-date="2026-06-24">
+                        6/24 (三)
+                    </button>
+                    <button id="tab-day2" class="date-tab px-6 py-3 rounded-full font-bold text-lg btn-transition bg-white text-slate-600 shadow border border-slate-200 hover:bg-slate-50" data-date="2026-07-01">
+                        7/01 (三)
+                    </button>
+                </div>
+
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800" id="current-date-title">2026/06/24 (三) 報名時段</h2>
+                    <p class="text-slate-500 mt-2 text-sm" id="day1-warning"></p>
+                </div>
+
+                <!-- Slots Grid -->
+                <div id="slots-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                    <!-- Slots will be injected here -->
+                </div>
+
+                <!-- Modify / Cancel Section -->
+                <div class="mt-16 text-center border-t border-amber-100 pt-8">
+                    <p class="text-slate-500 mb-4 text-sm">已經報名了嗎？需要修改時段或取消？</p>
+                    <button id="btn-open-modify-auth" class="bg-white border-2 border-slate-800 text-slate-800 font-bold py-2.5 px-6 rounded-xl hover:bg-slate-50 btn-transition shadow-sm">
+                        修改 / 取消報名
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="text-center py-6 text-slate-400 text-sm">
+            &copy; 2026 凝視犬貓專科醫院 周年慶活動
+        </footer>
+    </div>
+
+    <!-- Admin View -->
+    <div id="admin-view" class="flex-grow flex flex-col hidden bg-slate-50">
+        <header class="bg-slate-900 text-white py-4 px-6 flex justify-between items-center shadow-md">
+            <div>
+                <h1 class="text-xl font-bold text-[#F8C12F]">系統管理後台</h1>
+                <p class="text-xs text-slate-400">聽聽毛小孩的心音活動・後台報表</p>
+            </div>
+            <div class="flex space-x-4">
+                <button id="btn-export-csv" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-semibold btn-transition shadow">
+                    匯出 CSV
+                </button>
+                <button id="btn-logout-admin" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-sm font-semibold btn-transition">
+                    登出返回
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-grow p-4 md:p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">總報名數</p>
+                        <p class="text-3xl font-black text-slate-800 mt-1" id="admin-total-count">0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">6/24 (三) 報名數</p>
+                        <p class="text-2xl font-bold text-amber-600 mt-1" id="admin-day1-count">0 / 16</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">7/01 (三) 報名數</p>
+                        <p class="text-2xl font-bold text-indigo-600 mt-1" id="admin-day2-count">0 / 16</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse min-w-[1200px]">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-600 text-sm uppercase tracking-wider">
+                                    <th class="p-4 border-b">日期</th>
+                                    <th class="p-4 border-b">時間</th>
+                                    <th class="p-4 border-b">寵物姓名</th>
+                                    <th class="p-4 border-b">家長電話</th>
+                                    <th class="p-4 border-b">犬種</th>
+                                    <th class="p-4 border-b">體重</th>
+                                    <th class="p-4 border-b">答對題數</th>
+                                    <th class="p-4 border-b">問卷答案紀錄 (Q1 ~ Q5)</th>
+                                    <th class="p-4 border-b text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-body" class="text-slate-700 divide-y divide-slate-100">
+                                <!-- Data will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="admin-empty-state" class="hidden p-8 text-center text-slate-500">
+                        目前尚無報名資料
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden Admin Trigger -->
+    <span class="fixed bottom-2 right-2 text-slate-300/40 hover:text-slate-500 cursor-pointer text-xs select-none z-40" id="secret-trigger">v1.1 - 凝視專用</span>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, collection, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase Configuration & Initialization ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gaze-anniversary';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "mock-key", projectId: "mock-project" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Constants & System Rules ---
+        const EVENT_DATES = ['2026-06-24', '2026-07-01'];
+        const EVENT_TIMES = ['13:45', '14:30', '15:15', '16:00'];
+        const MAX_QUOTA_PER_SLOT = 4;
+        
+        // Correct answers for validation
+        const QUIZ_ANSWERS = {
+            q1: "錯誤",
+            q2: "正確",
+            q3: "C",
+            q4: "C",
+            q5: "B"
+        };
+        
+        function getCurrentTime() {
+            return new Date();
+        }
+        
+        const DEADLINE_DAY1 = new Date('2026-06-23T23:59:59+08:00');
+        const DEADLINE_ALL = new Date('2026-06-30T23:59:59+08:00');
+
+        // --- State Management ---
+        let allRegistrations = [];
+        let currentUserId = null;
+        let selectedDate = EVENT_DATES[0];
+        let isAdminLoggedIn = false;
+
+        // --- Core Application Logic ---
+        
+        async function initApp() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                currentUserId = auth.currentUser.uid;
+                startRealtimeListener();
+                setupEventListeners();
+                
+            } catch (error) {
+                console.error("App Initialization Error:", error);
+                showModal('MessageModal', { title: '系統錯誤', message: '連線失敗，請重新整理網頁。' });
+            }
+        }
+
+        function startRealtimeListener() {
+            if (!currentUserId) return;
+
+            const regCollection = collection(db, 'artifacts', appId, 'public', 'data', 'registrations');
+            
+            onSnapshot(regCollection, (snapshot) => {
+                allRegistrations = [];
+                snapshot.forEach(doc => {
+                    allRegistrations.push({ id: doc.id, ...doc.data() });
+                });
+
+                if (isAdminLoggedIn) {
+                    renderAdminTable();
+                } else {
+                    renderFrontendSlots();
+                }
+
+                document.getElementById('loading-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                }, 300);
+
+            }, (error) => {
+                console.error("Snapshot error:", error);
+            });
+        }
+
+        function getSlotCount(date, time) {
+            return allRegistrations.filter(r => r.date === date && r.time === time).length;
+        }
+
+        function isSlotFull(date, time) {
+            return getSlotCount(date, time) >= MAX_QUOTA_PER_SLOT;
+        }
+
+        function isDay1Locked() {
+            return getCurrentTime() > DEADLINE_DAY1;
+        }
+
+        function isSystemLocked() {
+            return getCurrentTime() > DEADLINE_ALL;
+        }
+
+        // --- UI Rendering ---
+        function renderFrontendSlots() {
+            if (isSystemLocked()) {
+                document.getElementById('booking-section').classList.add('hidden');
+                document.getElementById('closed-message').classList.remove('hidden');
+                document.getElementById('system-status-badge').textContent = '報名已截止';
+                document.getElementById('system-status-badge').className = 'inline-block bg-red-500/20 text-red-100 px-4 py-1.5 rounded-full text-xs font-semibold mt-2';
+                return;
+            }
+
+            document.querySelectorAll('.date-tab').forEach(tab => {
+                if (tab.dataset.date === selectedDate) {
+                    tab.className = 'date-tab px-6 py-3 rounded-full font-bold text-lg btn-transition bg-[#F8C12F] text-slate-800 shadow-md ring-2 ring-[#F8C12F]';
+                } else {
+                    tab.className = 'date-tab px-6 py-3 rounded-full font-bold text-lg btn-transition bg-white text-slate-600 shadow border border-slate-200 hover:bg-slate-50';
+                }
+            });
+
+            const displayDateStr = selectedDate === '2026-06-24' ? '2026/06/24 (三)' : '2026/07/01 (三)';
+            document.getElementById('current-date-title').textContent = `${displayDateStr} 報名時段`;
+
+            const warningEl = document.getElementById('day1-warning');
+            const isCurrentDateLocked = (selectedDate === '2026-06-24' && isDay1Locked());
+            
+            if (isCurrentDateLocked) {
+                warningEl.textContent = '※ 本日報名已於 6/23 23:59 截止';
+                warningEl.classList.add('text-red-500', 'font-bold');
+            } else {
+                warningEl.textContent = '每個時段限額 4 名，請點擊下方時段進行預約並填寫報名問卷';
+                warningEl.classList.remove('text-red-500', 'font-bold');
+            }
+
+            const grid = document.getElementById('slots-grid');
+            grid.innerHTML = '';
+
+            EVENT_TIMES.forEach(time => {
+                const currentCount = getSlotCount(selectedDate, time);
+                const remaining = MAX_QUOTA_PER_SLOT - currentCount;
+                const isFull = remaining <= 0;
+                
+                const disabled = isCurrentDateLocked || isFull;
+
+                const btn = document.createElement('button');
+                let baseClasses = "relative overflow-hidden p-6 rounded-2xl border-2 text-left flex flex-col justify-between btn-transition focus:outline-none ";
+                
+                if (disabled) {
+                    baseClasses += "bg-slate-100 border-slate-200 cursor-not-allowed opacity-70";
+                } else {
+                    baseClasses += "bg-white border-amber-200 hover:border-[#F8C12F] hover:shadow-md cursor-pointer transform hover:-translate-y-1";
+                }
+
+                btn.className = baseClasses;
+                
+                let statusHtml = '';
+                if (isCurrentDateLocked) {
+                    statusHtml = `<span class="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded font-bold">已截止</span>`;
+                } else if (isFull) {
+                    statusHtml = `<span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-bold">已額滿</span>`;
+                } else {
+                    statusHtml = `<span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded font-bold">剩餘 ${remaining} 名</span>`;
+                }
+
+                btn.innerHTML = `
+                    <div class="flex justify-between items-start mb-4 w-full">
+                        <span class="text-2xl font-black text-slate-700">${time}</span>
+                        ${statusHtml}
+                    </div>
+                    <div class="flex items-center text-slate-500 text-sm font-medium">
+                        <svg class="w-4 h-4 mr-1 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        報到時間
+                    </div>
+                `;
+
+                if (!disabled) {
+                    btn.onclick = () => openBookingModal(selectedDate, time);
+                }
+
+                grid.appendChild(btn);
+            });
+        }
+
+        // --- Transaction Implementations ---
+        async function executeBookingTransaction(date, time, formData) {
+            if (!currentUserId) throw new Error("未授權");
+            
+            const slotDocId = `${date}_${time.replace(':', '-')}`;
+            const slotRef = doc(db, 'artifacts', appId, 'public', 'data', 'slots', slotDocId);
+            const newRegRef = doc(collection(db, 'artifacts', appId, 'public', 'data', 'registrations'));
+
+            await runTransaction(db, async (transaction) => {
+                const slotDoc = await transaction.get(slotRef);
+                let currentCount = 0;
+                
+                if (slotDoc.exists()) {
+                    currentCount = slotDoc.data().count || 0;
+                }
+
+                if (currentCount >= MAX_QUOTA_PER_SLOT) {
+                    throw new Error("OVERBOOKED");
+                }
+
+                transaction.set(slotRef, { count: currentCount + 1 }, { merge: true });
+                transaction.set(newRegRef, {
+                    date,
+                    time,
+                    petName: formData.petName,
+                    phone: formData.phone,
+                    breed: formData.breed,
+                    weight: formData.weight,
+                    answers: formData.answers,
+                    score: formData.score,
+                    createdAt: serverTimestamp()
+                });
+            });
+        }
+
+        async function executeCancelTransaction(regId) {
+            if (!currentUserId) throw new Error("未授權");
+            
+            const regToCancel = allRegistrations.find(r => r.id === regId);
+            if (!regToCancel) throw new Error("找不到報名資料");
+
+            const slotDocId = `${regToCancel.date}_${regToCancel.time.replace(':', '-')}`;
+            const slotRef = doc(db, 'artifacts', appId, 'public', 'data', 'slots', slotDocId);
+            const regRef = doc(db, 'artifacts', appId, 'public', 'data', 'registrations', regId);
+
+            await runTransaction(db, async (transaction) => {
+                const slotDoc = await transaction.get(slotRef);
+                let currentCount = 0;
+                if (slotDoc.exists()) {
+                    currentCount = slotDoc.data().count || 0;
+                }
+
+                const newCount = Math.max(0, currentCount - 1);
+                
+                transaction.set(slotRef, { count: newCount }, { merge: true });
+                transaction.delete(regRef);
+            });
+        }
+
+        async function executeModifyTransaction(regId, newDate, newTime, formData) {
+             if (!currentUserId) throw new Error("未授權");
+             
+             const regToModify = allRegistrations.find(r => r.id === regId);
+             if (!regToModify) throw new Error("找不到報名資料");
+
+             if (regToModify.date === newDate && regToModify.time === newTime) {
+                 throw new Error("SAME_SLOT");
+             }
+
+             const oldSlotDocId = `${regToModify.date}_${regToModify.time.replace(':', '-')}`;
+             const newSlotDocId = `${newDate}_${newTime.replace(':', '-')}`;
+             
+             const oldSlotRef = doc(db, 'artifacts', appId, 'public', 'data', 'slots', oldSlotDocId);
+             const newSlotRef = doc(db, 'artifacts', appId, 'public', 'data', 'slots', newSlotDocId);
+             const regRef = doc(db, 'artifacts', appId, 'public', 'data', 'registrations', regId);
+
+             await runTransaction(db, async (transaction) => {
+                 const oldSlotDoc = await transaction.get(oldSlotRef);
+                 const newSlotDoc = await transaction.get(newSlotRef);
+
+                 let oldCount = oldSlotDoc.exists() ? (oldSlotDoc.data().count || 0) : 0;
+                 let newCount = newSlotDoc.exists() ? (newSlotDoc.data().count || 0) : 0;
+
+                 if (newCount >= MAX_QUOTA_PER_SLOT) {
+                     throw new Error("OVERBOOKED");
+                 }
+
+                 transaction.set(oldSlotRef, { count: Math.max(0, oldCount - 1) }, { merge: true });
+                 transaction.set(newSlotRef, { count: newCount + 1 }, { merge: true });
+                 
+                 transaction.set(regRef, {
+                    date: newDate,
+                    time: newTime,
+                    petName: formData.petName,
+                    phone: formData.phone,
+                    breed: formData.breed,
+                    weight: formData.weight,
+                    updatedAt: serverTimestamp()
+                 }, { merge: true });
+             });
+        }
+
+        // --- Custom Modal System ---
+        function renderModal(htmlContent, isWide = false) {
+            const container = document.getElementById('modal-container');
+            const maxWidthClass = isWide ? 'max-w-xl' : 'max-w-md';
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity overflow-y-auto">
+                    <div class="bg-white rounded-2xl shadow-2xl w-full ${maxWidthClass} overflow-hidden modal-animate my-8 max-h-[90vh] flex flex-col">
+                        ${htmlContent}
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
+        }
+
+        function showModal(type, data = {}) {
+            let content = '';
+            if (type === 'MessageModal') {
+                content = `
+                    <div class="p-6 text-center">
+                        <div class="w-16 h-16 rounded-full bg-amber-100 text-[#F8C12F] flex items-center justify-center mx-auto mb-4 border border-amber-200">
+                            <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">${data.title}</h3>
+                        <p class="text-slate-600 mb-6">${data.message}</p>
+                        <button onclick="window.closeModal()" class="w-full bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-3 px-4 rounded-xl btn-transition">
+                            確定
+                        </button>
+                    </div>
+                `;
+            } 
+            else if (type === 'ErrorModal') {
+                content = `
+                    <div class="p-6 text-center">
+                        <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">${data.title || '發生錯誤'}</h3>
+                        <p class="text-slate-600 mb-6">${data.message}</p>
+                        <button onclick="window.closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl btn-transition">
+                            關閉
+                        </button>
+                    </div>
+                `;
+            }
+            else if (type === 'ConfirmModal') {
+                 window.tempConfirmCallback = () => { window.closeModal(); if(data.onConfirm) data.onConfirm(); };
+                 content = `
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">${data.title}</h3>
+                        <p class="text-slate-600 mb-6">${data.message}</p>
+                        <div class="flex space-x-3">
+                            <button onclick="window.closeModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl btn-transition">
+                                取消
+                            </button>
+                            <button onclick="window.tempConfirmCallback()" class="flex-1 ${data.danger ? 'bg-red-600 hover:bg-red-700' : 'bg-slate-800 hover:bg-slate-700'} text-white font-bold py-3 px-4 rounded-xl btn-transition">
+                                確定
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            renderModal(content);
+        }
+        
+        window.closeModal = closeModal;
+
+        // --- Multi-Step Booking Modal ---
+        function openBookingModal(date, time) {
+            const displayDateStr = date === '2026-06-24' ? '6/24 (三)' : '7/01 (三)';
+            
+            // Temporary storage for Step 1 data
+            let petName = '';
+            let phone = '';
+            let breed = '';
+            let weight = '';
+
+            // Render Step 1
+            function renderStep1() {
+                const content = `
+                    <div class="flex justify-between items-center p-6 border-b border-slate-100">
+                        <h3 class="text-xl font-bold text-slate-800">預約報名 - 第一步</h3>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                    <div class="overflow-y-auto p-6 flex-grow space-y-4">
+                        <div class="bg-amber-50 border border-amber-200 text-amber-900 p-3 rounded-xl flex items-center justify-center font-bold text-sm">
+                            ⏰ 預約時段：${displayDateStr} ${time}
+                        </div>
+                        <form id="step1-form" onsubmit="window.goToStep2(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">寵物姓名 <span class="text-red-500">*</span></label>
+                                <input type="text" id="b-petName" required value="${petName}" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">家長手機號碼 <span class="text-red-500">*</span></label>
+                                <input type="tel" id="b-phone" required pattern="[0-9]{10}" title="請輸入 10 碼數字的手機號碼，無需空格或符號" value="${phone}" placeholder="如：0912345678" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">犬種 <span class="text-red-500">*</span></label>
+                                    <input type="text" id="b-breed" required placeholder="如: 瑪爾濟斯" value="${breed}" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">大約體重 (kg) <span class="text-red-500">*</span></label>
+                                    <input type="number" id="b-weight" required step="0.1" min="0" value="${weight}" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <button type="submit" class="w-full bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-3 px-4 rounded-xl btn-transition shadow">
+                                    下一步：填寫衛教認知問卷
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                renderModal(content, false);
+            }
+
+            // Move to Step 2
+            window.goToStep2 = (e) => {
+                e.preventDefault();
+                petName = document.getElementById('b-petName').value.trim();
+                phone = document.getElementById('b-phone').value.trim();
+                breed = document.getElementById('b-breed').value.trim();
+                weight = document.getElementById('b-weight').value.trim();
+
+                renderStep2();
+            };
+
+            // Render Step 2 (Quiz)
+            function renderStep2() {
+                const content = `
+                    <div class="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">衛教觀念小問卷 - 第二步</h3>
+                            <p class="text-xs text-slate-500 mt-1">※ 填寫完畢即可送出報名，不論答對或答錯均不影響報名資格喔！</p>
+                        </div>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                    <div class="overflow-y-auto p-6 flex-grow">
+                        <form id="step2-form" onsubmit="window.submitAllBooking(event)" class="space-y-6">
+                            
+                            <!-- Q1 -->
+                            <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q1. </span>聽到心雜音，就代表狗狗一定已經進入「心衰竭」了。</p>
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded border border-slate-200">
+                                        <input type="radio" name="q1" value="正確" required class="text-amber-500 focus:ring-amber-400">
+                                        <span class="text-sm">正確</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded border border-slate-200">
+                                        <input type="radio" name="q1" value="錯誤" required class="text-amber-500 focus:ring-amber-400">
+                                        <span class="text-sm">錯誤</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q2 -->
+                            <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q2. </span>當血液在心臟裡維持穩定的「平順流動」時，通常比較不容易產生異常聲音（心雜音）。</p>
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded border border-slate-200">
+                                        <input type="radio" name="q2" value="正確" required class="text-amber-500 focus:ring-amber-400">
+                                        <span class="text-sm">正確</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded border border-slate-200">
+                                        <input type="radio" name="q2" value="錯誤" required class="text-amber-500 focus:ring-amber-400">
+                                        <span class="text-sm">錯誤</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q3 -->
+                            <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q3. </span>獸醫師在評估有心雜音的狗狗「是否需要開始吃藥治療」時，通常會考量以下哪一個狀況？</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q3" value="A" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(A) 只要有聽到心雜音，就必須立刻開始吃藥</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q3" value="B" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(B) 只憑心雜音的大小聲來決定，越大聲代表越需要吃藥</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q3" value="C" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(C) 必須綜合評估心臟有沒有變大，以及是否影響到呼吸與生活</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q3" value="D" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(D) 只要狗狗還有食慾，就絕對不需要吃藥</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q4 -->
+                            <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q4. </span>狗狗如果來醫院時非常緊張、持續喘氣，對獸醫師的聽診有什麼影響？</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q4" value="A" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(A) 沒有任何影響，聽診器能完全隔絕噪音</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q4" value="B" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(B) 會讓原本的心雜音完全消失不見</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q4" value="C" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(C) 喘氣聲會干擾聽診，醫師更難聽清微弱心音</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q4" value="D" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(D) 會讓心臟超音波的畫面變得模糊</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q5 -->
+                            <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q5. </span>關於「心絲蟲」的預防與篩檢觀念，下列哪一個選項才是最正確的？</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q5" value="A" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(A) 只要聽診沒有心雜音，就代表絕對沒有感染</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q5" value="B" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(B) 早期感染通常無症狀，需每月定期預防並每年篩檢</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q5" value="C" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(C) 只要有吃預防藥，每年就完全不需要再做篩檢</span>
+                                    </label>
+                                    <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
+                                        <input type="radio" name="q5" value="D" required class="mt-1 text-amber-500 focus:ring-amber-400">
+                                        <span class="text-xs text-slate-700">(D) 心絲蟲只要剛感染，超音波一定能立刻看得很清楚</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="flex space-x-3 pt-4 border-t border-slate-100">
+                                <button type="button" onclick="window.goBackToStep1()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl btn-transition">
+                                    返回修改基本資料
+                                </button>
+                                <button type="submit" id="submit-booking-btn" class="flex-1 bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-3 rounded-xl btn-transition shadow-lg">
+                                    確認報名
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                renderModal(content, true); // Use wider layout for side-by-side / multiple columns
+            }
+
+            // Expose return to step 1
+            window.goBackToStep1 = renderStep1;
+
+            // Submit All
+            window.submitAllBooking = async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submit-booking-btn');
+                btn.disabled = true;
+                btn.innerHTML = '送出交易中...';
+
+                // Collect answers
+                const answers = {
+                    q1: document.querySelector('input[name="q1"]:checked').value,
+                    q2: document.querySelector('input[name="q2"]:checked').value,
+                    q3: document.querySelector('input[name="q3"]:checked').value,
+                    q4: document.querySelector('input[name="q4"]:checked').value,
+                    q5: document.querySelector('input[name="q5"]:checked').value,
+                };
+
+                // Calculate Score
+                let score = 0;
+                if (answers.q1 === QUIZ_ANSWERS.q1) score++;
+                if (answers.q2 === QUIZ_ANSWERS.q2) score++;
+                if (answers.q3 === QUIZ_ANSWERS.q3) score++;
+                if (answers.q4 === QUIZ_ANSWERS.q4) score++;
+                if (answers.q5 === QUIZ_ANSWERS.q5) score++;
+
+                const finalFormData = {
+                    petName,
+                    phone,
+                    breed,
+                    weight,
+                    answers,
+                    score: `${score}/5`
+                };
+
+                try {
+                    await executeBookingTransaction(date, time, finalFormData);
+                    closeModal();
+                    showModal('MessageModal', { 
+                        title: '預約成功！🎉', 
+                        message: `感謝您完成衛教問卷，您已成功預約 ${displayDateStr} ${time} 的心音篩檢。答對題數：${score}/5 題！請將這個預約時間記錄下來，並攜帶狗狗準時前來喔！` 
+                    });
+                } catch (error) {
+                    closeModal();
+                    if (error.message === "OVERBOOKED") {
+                        showModal('ErrorModal', { title: '額滿', message: '非常抱歉，在您填寫問卷時，這個時段剛好被其他家長預約滿了。請嘗試選擇其他時段。' });
+                    } else {
+                        showModal('ErrorModal', { message: '連線不穩，請稍後再試。' });
+                    }
+                }
+            };
+
+            // Start with step 1
+            renderStep1();
+        }
+
+        // --- Auth & Search registration ---
+        function openModifyAuthModal() {
+            window.submitAuthForm = (e) => {
+                e.preventDefault();
+                const phone = document.getElementById('a-phone').value.trim();
+                const petName = document.getElementById('a-petName').value.trim();
+                const date = document.getElementById('a-date').value;
+                const time = document.getElementById('a-time').value;
+
+                const match = allRegistrations.find(r => r.phone === phone && r.petName === petName && r.date === date && r.time === time);
+                
+                if (match) {
+                    openModifyActionModal(match);
+                } else {
+                    showModal('ErrorModal', { 
+                        title: '找不到資料', 
+                        message: '無法找到符合的報名紀錄。請確認填寫的家長電話、寵物姓名、預約日期與時段是否完全正確。' 
+                    });
+                }
+            };
+
+            const content = `
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-slate-800">變更報名資料驗證</h3>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                    <form onsubmit="window.submitAuthForm(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">家長登記電話</label>
+                            <input type="tel" id="a-phone" required pattern="[0-9]{10}" title="請輸入 10 碼數字的手機號碼" placeholder="如：0912345678" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">寵物姓名</label>
+                            <input type="text" id="a-petName" required placeholder="請輸入報名時的寵物姓名" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">報名的日期</label>
+                            <select id="a-date" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                <option value="2026-06-24">6/24 (三)</option>
+                                <option value="2026-07-01">7/01 (三)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">原先預約的時段</label>
+                            <select id="a-time" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                ${EVENT_TIMES.map(t => `<option value="${t}">${t}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="pt-4">
+                            <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl btn-transition shadow">
+                                進行資料驗證
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            renderModal(content);
+        }
+
+        function openModifyActionModal(registration) {
+            let slotOptions = '';
+            EVENT_DATES.forEach(d => {
+                if (d === '2026-06-24' && isDay1Locked()) return; 
+
+                EVENT_TIMES.forEach(t => {
+                    const dStr = d === '2026-06-24' ? '6/24' : '7/01';
+                    const isCurrent = (d === registration.date && t === registration.time);
+                    const full = isSlotFull(d, t);
+                    
+                    if (isCurrent) {
+                        slotOptions += `<option value="${d}|${t}" disabled>原時段: ${dStr} ${t}</option>`;
+                    } else if (full) {
+                        slotOptions += `<option value="${d}|${t}" disabled>已額滿: ${dStr} ${t}</option>`;
+                    } else {
+                        slotOptions += `<option value="${d}|${t}">${dStr} ${t} (可更換)</option>`;
+                    }
+                });
+            });
+
+            if (slotOptions === '') {
+                 slotOptions = `<option disabled>目前沒有其他可預約時段</option>`;
+            }
+
+            window.executeCancel = async () => {
+                showModal('ConfirmModal', {
+                    title: '確認取消心音篩檢報名？',
+                    message: '注意：取消後將會立即釋出此名額給其他家長。此操作無法回復！',
+                    danger: true,
+                    onConfirm: async () => {
+                        try {
+                            renderModal(`<div class="p-8 text-center text-slate-600 font-bold">正為您處理取消手續...</div>`);
+                            await executeCancelTransaction(registration.id);
+                            showModal('MessageModal', { title: '已取消報名', message: '您的報名資料已成功刪除，名額也已重新釋出。期待下次再見！' });
+                        } catch (error) {
+                            showModal('ErrorModal', { message: '系統忙碌中，取消手續失敗。' });
+                        }
+                    }
+                });
+            };
+
+            window.executeChangeSlot = async () => {
+                const select = document.getElementById('new-slot-select');
+                const val = select.value;
+                if (!val) return;
+
+                const [newDate, newTime] = val.split('|');
+
+                showModal('ConfirmModal', {
+                    title: '確定要轉移預約時間？',
+                    message: `您即將要把時段更改至 ${newDate === '2026-06-24' ? '6/24' : '7/01'} ${newTime}。`,
+                    onConfirm: async () => {
+                        try {
+                            renderModal(`<div class="p-8 text-center text-slate-600 font-bold">為您更改時段中...</div>`);
+                            await executeModifyTransaction(registration.id, newDate, newTime, {
+                                petName: registration.petName,
+                                phone: registration.phone,
+                                breed: registration.breed,
+                                weight: registration.weight
+                            });
+                            showModal('MessageModal', { title: '時間變更成功', message: '您已成功轉移篩檢預約時間！請依新時段前來。' });
+                        } catch (error) {
+                            if (error.message === "OVERBOOKED") {
+                                showModal('ErrorModal', { title: '時段額滿', message: '真不湊巧，該轉移時段剛才額滿了，請挑選別的時段。' });
+                            } else {
+                                showModal('ErrorModal', { message: '變更失敗，請重試一次。' });
+                            }
+                        }
+                    }
+                });
+            };
+
+            const content = `
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-slate-800">管理我的篩檢登記</h3>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                    
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 text-sm">
+                        <p class="text-slate-500 mb-1">寶貝姓名：<span class="font-bold text-slate-800">${registration.petName}</span></p>
+                        <p class="text-slate-500 mb-1">原定時段：<span class="font-bold text-amber-700">${registration.date === '2026-06-24' ? '6/24' : '7/01'} ${registration.time}</span></p>
+                        <p class="text-slate-500">測驗作答分數：<span class="font-bold text-emerald-600">${registration.score || '無'}</span></p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-4">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">更改預約時段</label>
+                            <div class="flex space-x-2">
+                                <select id="new-slot-select" class="flex-grow px-3 py-2.5 border border-slate-300 rounded-lg text-sm bg-white outline-none">
+                                    <option value="" disabled selected>請選擇變更的時段...</option>
+                                    ${slotOptions}
+                                </select>
+                                <button onclick="window.executeChangeSlot()" class="bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-2 px-4 rounded-lg btn-transition whitespace-nowrap text-sm">
+                                    確認更換
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                             <label class="block text-sm font-bold text-slate-700 mb-2">取消此報名</label>
+                             <button onclick="window.executeCancel()" class="w-full bg-white border-2 border-red-500 text-red-500 hover:bg-red-50 font-bold py-2 px-4 rounded-lg btn-transition text-sm">
+                                確定釋出名額並取消預約
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            renderModal(content);
+        }
+
+        // --- Admin Console ---
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pwd = document.getElementById('admin-pwd').value;
+            if (pwd === 'gaze0521') {
+                isAdminLoggedIn = true;
+                closeModal();
+                document.getElementById('frontend-view').classList.add('hidden');
+                document.getElementById('admin-view').classList.remove('hidden');
+                renderAdminTable();
+            } else {
+                document.getElementById('pwd-error').classList.remove('hidden');
+            }
+        }
+
+        function renderAdminTable() {
+            if (!isAdminLoggedIn) return;
+
+            const total = allRegistrations.length;
+            const day1 = allRegistrations.filter(r => r.date === '2026-06-24').length;
+            const day2 = allRegistrations.filter(r => r.date === '2026-07-01').length;
+            
+            document.getElementById('admin-total-count').textContent = total;
+            document.getElementById('admin-day1-count').textContent = `${day1} / 16`;
+            document.getElementById('admin-day2-count').textContent = `${day2} / 16`;
+
+            const tbody = document.getElementById('admin-table-body');
+            const emptyState = document.getElementById('admin-empty-state');
+            
+            if (total === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            const sorted = [...allRegistrations].sort((a, b) => {
+                if (a.date !== b.date) return a.date.localeCompare(b.date);
+                return a.time.localeCompare(b.time);
+            });
+
+            window.adminDelete = (id) => {
+                 showModal('ConfirmModal', {
+                    title: '強制取消家長報名？',
+                    message: '此操作將直接刪除這筆報名，並將該預約時段名額空出。確定執行？',
+                    danger: true,
+                    onConfirm: async () => {
+                        try {
+                            await executeCancelTransaction(id);
+                        } catch (e) {
+                            showModal('ErrorModal', { message: '刪除失敗' });
+                        }
+                    }
+                });
+            };
+
+            tbody.innerHTML = sorted.map(r => {
+                const ans = r.answers || {};
+                const qDisplay = `
+                    <div class="text-[11px] text-slate-500 font-mono">
+                        Q1: <span class="${ans.q1 === QUIZ_ANSWERS.q1 ? 'text-emerald-600 font-bold' : 'text-red-500'}">${ans.q1 || '無'}</span> | 
+                        Q2: <span class="${ans.q2 === QUIZ_ANSWERS.q2 ? 'text-emerald-600 font-bold' : 'text-red-500'}">${ans.q2 || '無'}</span> | 
+                        Q3: <span class="${ans.q3 === QUIZ_ANSWERS.q3 ? 'text-emerald-600 font-bold' : 'text-red-500'}">${ans.q3 || '無'}</span> | 
+                        Q4: <span class="${ans.q4 === QUIZ_ANSWERS.q4 ? 'text-emerald-600 font-bold' : 'text-red-500'}">${ans.q4 || '無'}</span> | 
+                        Q5: <span class="${ans.q5 === QUIZ_ANSWERS.q5 ? 'text-emerald-600 font-bold' : 'text-red-500'}">${ans.q5 || '無'}</span>
+                    </div>
+                `;
+
+                // Color score pill
+                const scoreNum = parseInt(r.score || '0');
+                const scoreColor = scoreNum >= 4 ? 'bg-emerald-100 text-emerald-800' : (scoreNum >= 2 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800');
+
+                return `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4 border-b font-semibold text-slate-800">${r.date === '2026-06-24' ? '6/24' : '7/01'}</td>
+                        <td class="p-4 border-b font-bold text-amber-600">${r.time}</td>
+                        <td class="p-4 border-b font-bold text-slate-900">${r.petName}</td>
+                        <td class="p-4 border-b">${r.phone}</td>
+                        <td class="p-4 border-b text-slate-600">${r.breed}</td>
+                        <td class="p-4 border-b font-mono">${r.weight} kg</td>
+                        <td class="p-4 border-b">
+                            <span class="${scoreColor} px-2.5 py-1 rounded-full text-xs font-bold font-mono">
+                                ${r.score || 'N/A'}
+                            </span>
+                        </td>
+                        <td class="p-4 border-b">${qDisplay}</td>
+                        <td class="p-4 border-b text-center">
+                            <button onclick="window.adminDelete('${r.id}')" class="text-red-600 hover:text-white bg-red-50 hover:bg-red-600 px-3 py-1 rounded-lg text-xs font-bold btn-transition">
+                                刪除
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- CSV Export Logic ---
+        function exportToCSV() {
+            if (allRegistrations.length === 0) {
+                showModal('MessageModal', { title: '無資料可供下載', message: '目前尚無任何報名資料可以匯出。' });
+                return;
+            }
+
+            const sorted = [...allRegistrations].sort((a, b) => {
+                if (a.date !== b.date) return a.date.localeCompare(b.date);
+                return a.time.localeCompare(b.time);
+            });
+
+            let csvContent = "\uFEFF"; // UTF-8 BOM
+            csvContent += "預約日期,報到時間,寵物姓名,家長電話,犬種,大約體重,問卷答對數,Q1聽到心雜音即心衰竭(正確答案:錯誤),Q2健康血流無雜音(正確答案:正確),Q3是否吃藥評估狀況(正確答案:C),Q4狗緊張喘氣對聽診影響(正確答案:C),Q5心絲蟲篩檢預防(正確答案:B)\n";
+            
+            sorted.forEach(r => {
+                const ans = r.answers || {};
+                const row = [
+                    r.date, 
+                    r.time, 
+                    `"${r.petName || ''}"`, 
+                    `"${r.phone || ''}"`, 
+                    `"${r.breed || ''}"`, 
+                    r.weight,
+                    `"${r.score || ''}"`,
+                    `"${ans.q1 || '未填'}"`,
+                    `"${ans.q2 || '未填'}"`,
+                    `"${ans.q3 || '未填'}"`,
+                    `"${ans.q4 || '未填'}"`,
+                    `"${ans.q5 || '未填'}"`
+                ].join(',');
+                csvContent += row + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `聽聽心音預約及問卷表_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function setupEventListeners() {
+            document.getElementById('tab-day1').addEventListener('click', () => {
+                selectedDate = '2026-06-24';
+                renderFrontendSlots();
+            });
+            document.getElementById('tab-day2').addEventListener('click', () => {
+                selectedDate = '2026-07-01';
+                renderFrontendSlots();
+            });
+
+            document.getElementById('btn-open-modify-auth').addEventListener('click', openModifyAuthModal);
+
+            document.getElementById('secret-trigger').addEventListener('click', () => {
+                window.submitAdminLogin = handleAdminLogin;
+                const content = `
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">凝視醫院・管理端登入</h3>
+                        <form onsubmit="window.submitAdminLogin(event)" class="space-y-4">
+                            <div>
+                                <input type="password" id="admin-pwd" placeholder="請輸入安全登入密碼" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
+                                <p id="pwd-error" class="text-red-500 text-sm mt-1 hidden font-bold">密碼有誤，請再試一次。</p>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button type="button" onclick="window.closeModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-lg">返回前台</button>
+                                <button type="submit" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg">登入後台</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                renderModal(content);
+            });
+
+            document.getElementById('btn-logout-admin').addEventListener('click', () => {
+                isAdminLoggedIn = false;
+                document.getElementById('admin-view').classList.add('hidden');
+                document.getElementById('frontend-view').classList.remove('hidden');
+                renderFrontendSlots();
+            });
+
+            document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
+            document.getElementById('frontend-view').classList.remove('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+</html>
