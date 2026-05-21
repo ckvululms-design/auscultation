@@ -1082,6 +1082,101 @@
                 renderModal(content, true); // Use wider layout for side-by-side / multiple columns
             }
 
+            function getAvailableSlotOptionsForReselect() {
+                const available = [];
+                EVENT_DATES.forEach(d => {
+                    if (d === '2026-06-24' && isDay1Locked()) return;
+                    EVENT_TIMES.forEach(t => {
+                        const full = isSlotFull(d, t);
+                        const isOriginal = (d === date && t === time);
+                        if (!full && !isOriginal) {
+                            available.push({ date: d, time: t, remaining: MAX_QUOTA_PER_SLOT - getSlotCount(d, t) });
+                        }
+                    });
+                });
+                return available;
+            }
+
+            function renderOverbookedReselectModal(finalFormData, score) {
+                const available = getAvailableSlotOptionsForReselect();
+                const originalDateStr = date === '2026-06-24' ? '6/24 (三)' : '7/01 (三)';
+
+                if (available.length === 0) {
+                    showModal('ErrorModal', {
+                        title: '目前沒有可改選時段',
+                        message: '非常抱歉，您填寫問卷時原時段剛好額滿，且目前其他時段也暫時沒有名額。您的資料尚未送出，請稍後重新整理頁面再確認是否有名額釋出。'
+                    });
+                    return;
+                }
+
+                const optionsHtml = available.map(slot => {
+                    const dStr = slot.date === '2026-06-24' ? '6/24 (三)' : '7/01 (三)';
+                    return `<option value="${slot.date}|${slot.time}">${dStr} ${slot.time}｜剩餘 ${slot.remaining} 名</option>`;
+                }).join('');
+
+                window.submitReselectSlot = async (e) => {
+                    e.preventDefault();
+                    const btn = document.getElementById('submit-reselect-btn');
+                    const select = document.getElementById('reselect-slot-select');
+                    const val = select.value;
+                    if (!val) return;
+
+                    const [newDate, newTime] = val.split('|');
+                    btn.disabled = true;
+                    btn.innerHTML = '改選送出中...';
+
+                    try {
+                        await executeBookingTransaction(newDate, newTime, finalFormData);
+                        closeModal();
+                        const newDateStr = newDate === '2026-06-24' ? '6/24 (三)' : '7/01 (三)';
+                        showModal('MessageModal', {
+                            title: '改選成功！🎉',
+                            message: `感謝您完成衛教問卷，原本的 ${originalDateStr} ${time} 剛好額滿，但您已成功改選 ${newDateStr} ${newTime} 的心音篩檢。答對題數：${score}/5 題！請記下預約時間，並提前 5–10 分鐘報到。`
+                        });
+                    } catch (error) {
+                        if (error.message === 'OVERBOOKED') {
+                            renderOverbookedReselectModal(finalFormData, score);
+                        } else {
+                            showModal('ErrorModal', { message: '連線不穩，請稍後再試。您的資料尚未送出。' });
+                        }
+                    }
+                };
+
+                const content = `
+                    <div class="p-6">
+                        <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 text-center">原時段剛好額滿</h3>
+                        <p class="text-slate-600 mb-4 text-center leading-relaxed">
+                            您的基本資料與問卷答案已保留，不需要重新填寫。請直接改選目前仍有名額的時段。
+                        </p>
+                        <div class="bg-amber-50 border border-amber-200 text-amber-900 p-3 rounded-xl text-sm mb-4">
+                            原本選擇：<span class="font-bold">${originalDateStr} ${time}</span><br>
+                            狀態：在您填寫期間已被其他家長完成預約
+                        </div>
+                        <form onsubmit="window.submitReselectSlot(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">請改選其他可預約時段</label>
+                                <select id="reselect-slot-select" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                    <option value="" disabled selected>請選擇新的時段...</option>
+                                    ${optionsHtml}
+                                </select>
+                            </div>
+                            <div class="flex space-x-3 pt-2">
+                                <button type="button" onclick="window.goBackToStep1()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl btn-transition">
+                                    返回修改資料
+                                </button>
+                                <button type="submit" id="submit-reselect-btn" class="flex-1 bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-3 px-4 rounded-xl btn-transition shadow">
+                                    確認改選
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                renderModal(content);
+            }
+
             // Expose return to step 1
             window.goBackToStep1 = renderStep1;
 
@@ -1135,11 +1230,11 @@
                         message: `感謝您完成衛教問卷，您已成功預約 ${displayDateStr} ${time} 的心音篩檢。答對題數：${score}/5 題！請記下預約時間，並提前 5–10 分鐘報到。請使用牽繩並可攜帶狗狗熟悉的零食、墊子或玩具；若狗狗近期已有喘、咳嗽惡化、昏倒或睡覺呼吸明顯改變，建議不要等待活動，請直接安排門診。` 
                     });
                 } catch (error) {
-                    closeModal();
                     if (error.message === "OVERBOOKED") {
-                        showModal('ErrorModal', { title: '額滿', message: '非常抱歉，在您填寫問卷時，這個時段剛好被其他家長預約滿了。請嘗試選擇其他時段。' });
+                        renderOverbookedReselectModal(finalFormData, score);
                     } else {
-                        showModal('ErrorModal', { message: '連線不穩，請稍後再試。' });
+                        closeModal();
+                        showModal('ErrorModal', { message: '連線不穩，請稍後再試。您的資料尚未送出。' });
                     }
                 }
             };
