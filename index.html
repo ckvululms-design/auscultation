@@ -124,6 +124,61 @@
                 </div>
             </section>
 
+            <!-- Fear Free / FAS Guide for Dogs -->
+            <section class="mb-10 bg-white rounded-2xl p-6 border-2 border-amber-100 shadow-sm">
+                <div class="flex items-center gap-2 mb-4 border-b border-amber-100 pb-3">
+                    <span class="text-2xl">🐶</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">狗狗 Fear Free 小提醒：辨識 FAS 訊號</h3>
+                        <p class="text-xs text-slate-500 mt-1">FAS = Fear, Anxiety, Stress。篩檢前先觀察情緒狀態，可以讓心音聽診更順利，也讓狗狗比較安心。</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                            <h4 class="font-black text-emerald-800">低 FAS：可以觀察</h4>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-1 list-disc pl-5">
+                            <li>願意探索環境或接受零食</li>
+                            <li>身體姿勢較放鬆，尾巴自然</li>
+                            <li>可以被家長安撫，能短暫配合檢查</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                            <h4 class="font-black text-amber-900">中 FAS：需要放慢</h4>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-1 list-disc pl-5">
+                            <li>持續喘氣、舔鼻、打哈欠、流口水</li>
+                            <li>耳朵後貼、尾巴降低或夾尾</li>
+                            <li>躲避、後退、發抖、身體僵硬</li>
+                            <li>不願意吃平常喜歡的零食</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                            <h4 class="font-black text-red-800">高 FAS：請先暫停</h4>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-1 list-disc pl-5">
+                            <li>僵住不動、強烈掙扎或想逃跑</li>
+                            <li>低吼、露齒、空咬或試圖咬人</li>
+                            <li>恐慌式吠叫、失控喘氣、排尿或排便</li>
+                            <li>此時不建議硬做，請讓工作人員協助調整</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-600">
+                    <strong class="text-slate-800">來院小建議：</strong>可以攜帶狗狗熟悉的胸背帶、墊子、零食或玩具。若狗狗已出現明顯 FAS 訊號，請先告訴工作人員，我們會以減少壓力與安全為優先，而不是急著完成流程。
+                </div>
+            </section>
+
             <!-- Closed Message (Hidden by default) -->
             <div id="closed-message" class="hidden bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow-sm mb-8">
                 <h3 class="text-xl font-bold text-red-700 mb-2">報名已截止</h3>
@@ -673,6 +728,10 @@
                     </div>
                     <div class="overflow-y-auto p-6 flex-grow">
                         <form id="step2-form" onsubmit="window.submitAllBooking(event)" class="space-y-6">
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-sm text-slate-600">
+                                <p class="font-bold text-slate-800 mb-1">填寫前小提醒：狗狗緊張不是「不乖」，而是 FAS 訊號。</p>
+                                <p>常見表現包含持續喘氣、舔鼻、打哈欠、發抖、躲避、身體僵硬、夾尾、低吼或想逃跑。若來院時已經很緊張，請先告訴工作人員，我們會協助調整檢查節奏。</p>
+                            </div>
                             
                             <!-- Q1 -->
                             <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
@@ -729,23 +788,23 @@
 
                             <!-- Q4 -->
                             <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
-                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q4. </span>狗狗如果來醫院時非常緊張、持續喘氣，對獸醫師的聽診有什麼影響？</p>
+                                <p class="font-bold text-slate-800 text-sm mb-2"><span class="text-amber-600 font-black">Q4. </span>下列哪一組表現，最可能代表狗狗在醫院的 FAS（害怕、焦慮、壓力）正在升高？</p>
                                 <div class="space-y-2">
                                     <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
                                         <input type="radio" name="q4" value="A" required class="mt-1 text-amber-500 focus:ring-amber-400">
-                                        <span class="text-xs text-slate-700">(A) 沒有任何影響，聽診器能完全隔絕噪音</span>
+                                        <span class="text-xs text-slate-700">(A) 尾巴自然擺動，主動探索環境，也願意吃零食</span>
                                     </label>
                                     <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
                                         <input type="radio" name="q4" value="B" required class="mt-1 text-amber-500 focus:ring-amber-400">
-                                        <span class="text-xs text-slate-700">(B) 會讓原本的心雜音完全消失不見</span>
+                                        <span class="text-xs text-slate-700">(B) 能被家長安撫，身體放鬆，短暫配合碰觸</span>
                                     </label>
                                     <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
                                         <input type="radio" name="q4" value="C" required class="mt-1 text-amber-500 focus:ring-amber-400">
-                                        <span class="text-xs text-slate-700">(C) 喘氣聲會干擾聽診，醫師更難聽清微弱心音</span>
+                                        <span class="text-xs text-slate-700">(C) 持續喘氣、舔鼻、躲避、發抖、身體僵硬或夾尾</span>
                                     </label>
                                     <label class="flex items-start space-x-2 cursor-pointer bg-white p-2 rounded border border-slate-200">
                                         <input type="radio" name="q4" value="D" required class="mt-1 text-amber-500 focus:ring-amber-400">
-                                        <span class="text-xs text-slate-700">(D) 會讓心臟超音波的畫面變得模糊</span>
+                                        <span class="text-xs text-slate-700">(D) 安靜坐著但仍願意接受零食，且可以正常被觸摸</span>
                                     </label>
                                 </div>
                             </div>
@@ -1126,7 +1185,7 @@
             });
 
             let csvContent = "\uFEFF"; // UTF-8 BOM
-            csvContent += "預約日期,報到時間,寵物姓名,家長電話,犬種,大約體重,問卷答對數,Q1聽到心雜音即心衰竭(正確答案:錯誤),Q2健康血流無雜音(正確答案:正確),Q3是否吃藥評估狀況(正確答案:C),Q4狗緊張喘氣對聽診影響(正確答案:C),Q5心絲蟲篩檢預防(正確答案:B)\n";
+            csvContent += "預約日期,報到時間,寵物姓名,家長電話,犬種,大約體重,問卷答對數,Q1聽到心雜音即心衰竭(正確答案:錯誤),Q2健康血流無雜音(正確答案:正確),Q3是否吃藥評估狀況(正確答案:C),Q4狗狗FAS升高辨識(正確答案:C),Q5心絲蟲篩檢預防(正確答案:B)\n";
             
             sorted.forEach(r => {
                 const ans = r.answers || {};
