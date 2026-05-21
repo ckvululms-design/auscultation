@@ -124,6 +124,41 @@
                 </div>
             </section>
 
+
+            <!-- Eligibility & Expectation Management -->
+            <section class="mb-10 bg-white rounded-2xl p-6 border-2 border-amber-100 shadow-sm">
+                <div class="flex items-center gap-2 mb-4 border-b border-amber-100 pb-3">
+                    <span class="text-2xl">✅</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">報名前請先確認：這是心音篩檢，不是完整心臟科門診</h3>
+                        <p class="text-xs text-slate-500 mt-1">我們希望幫助家長早期注意可能的心臟警訊，同時避免把篩檢誤解成完整診斷。</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                        <h4 class="font-black text-emerald-800 mb-2">適合參加的狗狗</h4>
+                        <ul class="text-sm text-slate-600 space-y-1 list-disc pl-5">
+                            <li>尚未被診斷心臟病，想先了解心音狀況</li>
+                            <li>高齡小型犬、心臟病好發品種犬</li>
+                            <li>平常沒有明顯症狀，但家長希望做初步篩檢</li>
+                            <li>從未做過心臟篩檢，或想建立健康紀錄</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                        <h4 class="font-black text-red-800 mb-2">不適合等待活動，建議直接約門診</h4>
+                        <ul class="text-sm text-slate-600 space-y-1 list-disc pl-5">
+                            <li>近期已出現喘、咳嗽惡化、昏倒或活動力明顯下降</li>
+                            <li>睡著時的一分鐘呼吸次數明顯高於平常基準</li>
+                            <li>已知心臟病且需要調藥、複診或完整心臟超音波</li>
+                            <li>本活動不能取代胸腔 X 光、心臟超音波或急診評估</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-4 bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-600">
+                    <strong class="text-slate-800">活動定位：</strong>心音篩檢是發現警訊的第一步；若聽到疑似心雜音或因緊張、喘氣影響聽診品質，現場可能會建議安排後續完整檢查。
+                </div>
+            </section>
+
             <!-- Fear Free / FAS Guide for Dogs -->
             <section class="mb-10 bg-white rounded-2xl p-6 border-2 border-amber-100 shadow-sm">
                 <div class="flex items-center gap-2 mb-4 border-b border-amber-100 pb-3">
@@ -241,7 +276,7 @@
 
         <main class="flex-grow p-4 md:p-8">
             <div class="max-w-7xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
                         <p class="text-slate-500 text-sm font-semibold">總報名數</p>
                         <p class="text-3xl font-black text-slate-800 mt-1" id="admin-total-count">0</p>
@@ -254,11 +289,23 @@
                         <p class="text-slate-500 text-sm font-semibold">7/01 (三) 報名數</p>
                         <p class="text-2xl font-bold text-indigo-600 mt-1" id="admin-day2-count">0 / 16</p>
                     </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">新客比例</p>
+                        <p class="text-2xl font-bold text-emerald-600 mt-1" id="admin-new-client-rate">0%</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">願意後續預約</p>
+                        <p class="text-2xl font-bold text-sky-600 mt-1" id="admin-followup-rate">0%</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <p class="text-slate-500 text-sm font-semibold">有症狀 / 高 FAS</p>
+                        <p class="text-2xl font-bold text-red-600 mt-1" id="admin-risk-count">0</p>
+                    </div>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto custom-scrollbar">
-                        <table class="w-full text-left border-collapse min-w-[1200px]">
+                        <table class="w-full text-left border-collapse min-w-[1700px]">
                             <thead>
                                 <tr class="bg-slate-100 text-slate-600 text-sm uppercase tracking-wider">
                                     <th class="p-4 border-b">日期</th>
@@ -267,6 +314,11 @@
                                     <th class="p-4 border-b">家長電話</th>
                                     <th class="p-4 border-b">犬種</th>
                                     <th class="p-4 border-b">體重</th>
+                                    <th class="p-4 border-b">新/舊客</th>
+                                    <th class="p-4 border-b">來源</th>
+                                    <th class="p-4 border-b">風險分層</th>
+                                    <th class="p-4 border-b">症狀/FAS</th>
+                                    <th class="p-4 border-b">後續意願</th>
                                     <th class="p-4 border-b">答對題數</th>
                                     <th class="p-4 border-b">問卷答案紀錄 (Q1 ~ Q5)</th>
                                     <th class="p-4 border-b text-center">操作</th>
@@ -511,6 +563,15 @@
                     phone: formData.phone,
                     breed: formData.breed,
                     weight: formData.weight,
+                    clientStatus: formData.clientStatus,
+                    referralSource: formData.referralSource,
+                    followupIntent: formData.followupIntent,
+                    ageGroup: formData.ageGroup,
+                    sizeGroup: formData.sizeGroup,
+                    previousMurmur: formData.previousMurmur,
+                    symptoms: formData.symptoms,
+                    fasConcern: formData.fasConcern,
+                    visitNotes: formData.visitNotes,
                     answers: formData.answers,
                     score: formData.score,
                     createdAt: serverTimestamp()
@@ -663,6 +724,15 @@
             let phone = '';
             let breed = '';
             let weight = '';
+            let clientStatus = '';
+            let referralSource = '';
+            let followupIntent = '';
+            let ageGroup = '';
+            let sizeGroup = '';
+            let previousMurmur = '';
+            let symptoms = [];
+            let fasConcern = '';
+            let visitNotes = '';
 
             // Render Step 1
             function renderStep1() {
@@ -694,6 +764,114 @@
                                     <input type="number" id="b-weight" required step="0.1" min="0" value="${weight}" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">
                                 </div>
                             </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">是否曾經來過凝視犬貓專科醫院？ <span class="text-red-500">*</span></label>
+                                    <select id="b-clientStatus" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                        <option value="" ${clientStatus === '' ? 'selected' : ''}>請選擇</option>
+                                        <option value="舊客：曾經看診過" ${clientStatus === '舊客：曾經看診過' ? 'selected' : ''}>是，曾經看診過</option>
+                                        <option value="新客：第一次接觸凝視" ${clientStatus === '新客：第一次接觸凝視' ? 'selected' : ''}>否，第一次參加／第一次接觸凝視</option>
+                                        <option value="不確定" ${clientStatus === '不確定' ? 'selected' : ''}>不確定</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">您從哪裡得知這個活動？ <span class="text-red-500">*</span></label>
+                                    <select id="b-referralSource" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                        <option value="" ${referralSource === '' ? 'selected' : ''}>請選擇</option>
+                                        <option value="Facebook" ${referralSource === 'Facebook' ? 'selected' : ''}>Facebook</option>
+                                        <option value="Instagram" ${referralSource === 'Instagram' ? 'selected' : ''}>Instagram</option>
+                                        <option value="LINE 官方帳號" ${referralSource === 'LINE 官方帳號' ? 'selected' : ''}>LINE 官方帳號</option>
+                                        <option value="官網" ${referralSource === '官網' ? 'selected' : ''}>官網</option>
+                                        <option value="親友推薦" ${referralSource === '親友推薦' ? 'selected' : ''}>親友推薦</option>
+                                        <option value="院內公告" ${referralSource === '院內公告' ? 'selected' : ''}>院內公告</option>
+                                        <option value="獸醫師／診所推薦" ${referralSource === '獸醫師／診所推薦' ? 'selected' : ''}>獸醫師／診所推薦</option>
+                                        <option value="其他" ${referralSource === '其他' ? 'selected' : ''}>其他</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">🔎</span>
+                                    <h4 class="font-bold text-slate-800">狗狗基本風險分層</h4>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">年齡 <span class="text-red-500">*</span></label>
+                                        <select id="b-ageGroup" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                            <option value="" ${ageGroup === '' ? 'selected' : ''}>請選擇</option>
+                                            <option value="<1 歲" ${ageGroup === '<1 歲' ? 'selected' : ''}>小於 1 歲</option>
+                                            <option value="1–6 歲" ${ageGroup === '1–6 歲' ? 'selected' : ''}>1–6 歲</option>
+                                            <option value="7–10 歲" ${ageGroup === '7–10 歲' ? 'selected' : ''}>7–10 歲</option>
+                                            <option value=">10 歲" ${ageGroup === '>10 歲' ? 'selected' : ''}>大於 10 歲</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">體型 <span class="text-red-500">*</span></label>
+                                        <select id="b-sizeGroup" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                            <option value="" ${sizeGroup === '' ? 'selected' : ''}>請選擇</option>
+                                            <option value="小型犬" ${sizeGroup === '小型犬' ? 'selected' : ''}>小型犬</option>
+                                            <option value="中型犬" ${sizeGroup === '中型犬' ? 'selected' : ''}>中型犬</option>
+                                            <option value="大型犬" ${sizeGroup === '大型犬' ? 'selected' : ''}>大型犬</option>
+                                            <option value="巨型犬" ${sizeGroup === '巨型犬' ? 'selected' : ''}>巨型犬</option>
+                                            <option value="不確定" ${sizeGroup === '不確定' ? 'selected' : ''}>不確定</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">是否曾被告知有心雜音？ <span class="text-red-500">*</span></label>
+                                        <select id="b-previousMurmur" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                            <option value="" ${previousMurmur === '' ? 'selected' : ''}>請選擇</option>
+                                            <option value="是" ${previousMurmur === '是' ? 'selected' : ''}>是</option>
+                                            <option value="否" ${previousMurmur === '否' ? 'selected' : ''}>否</option>
+                                            <option value="不確定" ${previousMurmur === '不確定' ? 'selected' : ''}>不確定</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">是否曾有以下狀況？可複選</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                                        ${['咳嗽', '喘', '運動耐受下降', '昏倒／突然無力', '睡覺呼吸變快', '都沒有'].map(item => `
+                                            <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 cursor-pointer">
+                                                <input type="checkbox" name="b-symptoms" value="${item}" ${symptoms.includes(item) ? 'checked' : ''} class="text-amber-500 focus:ring-amber-400">
+                                                <span>${item}</span>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">🐾</span>
+                                    <h4 class="font-bold text-slate-800">來院配合與 FAS 提醒</h4>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">狗狗是否容易在醫院緊張、吠叫、發抖、喘氣或有咬人／強烈掙扎經驗？ <span class="text-red-500">*</span></label>
+                                    <select id="b-fasConcern" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none bg-white">
+                                        <option value="" ${fasConcern === '' ? 'selected' : ''}>請選擇</option>
+                                        <option value="低：通常可以配合" ${fasConcern === '低：通常可以配合' ? 'selected' : ''}>通常可以配合</option>
+                                        <option value="中：容易緊張，需要放慢" ${fasConcern === '中：容易緊張，需要放慢' ? 'selected' : ''}>容易緊張，需要放慢</option>
+                                        <option value="高：曾有強烈掙扎／攻擊／想逃跑" ${fasConcern === '高：曾有強烈掙扎／攻擊／想逃跑' ? 'selected' : ''}>曾有強烈掙扎、攻擊或想逃跑</option>
+                                        <option value="不確定" ${fasConcern === '不確定' ? 'selected' : ''}>不確定</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">其他想先提醒工作人員的事情</label>
+                                    <textarea id="b-visitNotes" rows="2" placeholder="例如：怕陌生人、怕被抱、需要家長抱著、對零食有興趣、食物過敏等" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-400 outline-none">${visitNotes}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="bg-sky-50 border border-sky-100 rounded-xl p-4">
+                                <label class="block text-sm font-bold text-slate-700 mb-2">若本次篩檢發現心雜音或其他異常，您是否願意安排後續完整檢查？ <span class="text-red-500">*</span></label>
+                                <select id="b-followupIntent" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-300 outline-none bg-white">
+                                    <option value="" ${followupIntent === '' ? 'selected' : ''}>請選擇</option>
+                                    <option value="願意，由現場人員協助預約" ${followupIntent === '願意，由現場人員協助預約' ? 'selected' : ''}>願意，由現場人員協助預約</option>
+                                    <option value="想先了解費用與檢查內容" ${followupIntent === '想先了解費用與檢查內容' ? 'selected' : ''}>想先了解費用與檢查內容</option>
+                                    <option value="暫時不考慮" ${followupIntent === '暫時不考慮' ? 'selected' : ''}>暫時不考慮</option>
+                                    <option value="不確定" ${followupIntent === '不確定' ? 'selected' : ''}>不確定</option>
+                                </select>
+                            </div>
                             <div class="pt-2">
                                 <button type="submit" class="w-full bg-[#F8C12F] hover:bg-[#E2AF24] text-slate-800 font-bold py-3 px-4 rounded-xl btn-transition shadow">
                                     下一步：填寫衛教認知問卷
@@ -702,7 +880,7 @@
                         </form>
                     </div>
                 `;
-                renderModal(content, false);
+                renderModal(content, true);
             }
 
             // Move to Step 2
@@ -712,6 +890,15 @@
                 phone = document.getElementById('b-phone').value.trim();
                 breed = document.getElementById('b-breed').value.trim();
                 weight = document.getElementById('b-weight').value.trim();
+                clientStatus = document.getElementById('b-clientStatus').value;
+                referralSource = document.getElementById('b-referralSource').value;
+                followupIntent = document.getElementById('b-followupIntent').value;
+                ageGroup = document.getElementById('b-ageGroup').value;
+                sizeGroup = document.getElementById('b-sizeGroup').value;
+                previousMurmur = document.getElementById('b-previousMurmur').value;
+                symptoms = Array.from(document.querySelectorAll('input[name="b-symptoms"]:checked')).map(el => el.value);
+                fasConcern = document.getElementById('b-fasConcern').value;
+                visitNotes = document.getElementById('b-visitNotes').value.trim();
 
                 renderStep2();
             };
@@ -879,6 +1066,15 @@
                     phone,
                     breed,
                     weight,
+                    clientStatus,
+                    referralSource,
+                    followupIntent,
+                    ageGroup,
+                    sizeGroup,
+                    previousMurmur,
+                    symptoms,
+                    fasConcern,
+                    visitNotes,
                     answers,
                     score: `${score}/5`
                 };
@@ -888,7 +1084,7 @@
                     closeModal();
                     showModal('MessageModal', { 
                         title: '預約成功！🎉', 
-                        message: `感謝您完成衛教問卷，您已成功預約 ${displayDateStr} ${time} 的心音篩檢。答對題數：${score}/5 題！請將這個預約時間記錄下來，並攜帶狗狗準時前來喔！` 
+                        message: `感謝您完成衛教問卷，您已成功預約 ${displayDateStr} ${time} 的心音篩檢。答對題數：${score}/5 題！請記下預約時間，並提前 5–10 分鐘報到。請使用牽繩並可攜帶狗狗熟悉的零食、墊子或玩具；若狗狗近期已有喘、咳嗽惡化、昏倒或睡覺呼吸明顯改變，建議不要等待活動，請直接安排門診。` 
                     });
                 } catch (error) {
                     closeModal();
@@ -1096,10 +1292,18 @@
             const total = allRegistrations.length;
             const day1 = allRegistrations.filter(r => r.date === '2026-06-24').length;
             const day2 = allRegistrations.filter(r => r.date === '2026-07-01').length;
+            const percent = (count) => total > 0 ? `${Math.round((count / total) * 100)}%` : '0%';
+            const newClientCount = allRegistrations.filter(r => (r.clientStatus || '').includes('新客')).length;
+            const followupCount = allRegistrations.filter(r => ['願意，由現場人員協助預約', '想先了解費用與檢查內容'].includes(r.followupIntent)).length;
+            const symptomCount = allRegistrations.filter(r => Array.isArray(r.symptoms) && r.symptoms.some(s => s !== '都沒有')).length;
+            const highFasCount = allRegistrations.filter(r => (r.fasConcern || '').includes('高')).length;
             
             document.getElementById('admin-total-count').textContent = total;
             document.getElementById('admin-day1-count').textContent = `${day1} / 16`;
             document.getElementById('admin-day2-count').textContent = `${day2} / 16`;
+            document.getElementById('admin-new-client-rate').textContent = percent(newClientCount);
+            document.getElementById('admin-followup-rate').textContent = percent(followupCount);
+            document.getElementById('admin-risk-count').textContent = `${symptomCount} / ${highFasCount}`;
 
             const tbody = document.getElementById('admin-table-body');
             const emptyState = document.getElementById('admin-empty-state');
@@ -1144,6 +1348,10 @@
                     </div>
                 `;
 
+                const symptomsText = Array.isArray(r.symptoms) && r.symptoms.length ? r.symptoms.join('、') : '未填';
+                const riskDisplay = `${r.ageGroup || '未填'} / ${r.sizeGroup || '未填'} / 心雜音:${r.previousMurmur || '未填'}`;
+                const fasDisplay = `${symptomsText}<br><span class="text-xs text-slate-400">FAS：${r.fasConcern || '未填'}</span>${r.visitNotes ? `<br><span class="text-xs text-slate-400">備註：${r.visitNotes}</span>` : ''}`;
+
                 // Color score pill
                 const scoreNum = parseInt(r.score || '0');
                 const scoreColor = scoreNum >= 4 ? 'bg-emerald-100 text-emerald-800' : (scoreNum >= 2 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800');
@@ -1156,6 +1364,11 @@
                         <td class="p-4 border-b">${r.phone}</td>
                         <td class="p-4 border-b text-slate-600">${r.breed}</td>
                         <td class="p-4 border-b font-mono">${r.weight} kg</td>
+                        <td class="p-4 border-b text-sm">${r.clientStatus || '未填'}</td>
+                        <td class="p-4 border-b text-sm">${r.referralSource || '未填'}</td>
+                        <td class="p-4 border-b text-sm">${riskDisplay}</td>
+                        <td class="p-4 border-b text-sm">${fasDisplay}</td>
+                        <td class="p-4 border-b text-sm font-semibold text-sky-700">${r.followupIntent || '未填'}</td>
                         <td class="p-4 border-b">
                             <span class="${scoreColor} px-2.5 py-1 rounded-full text-xs font-bold font-mono">
                                 ${r.score || 'N/A'}
@@ -1196,6 +1409,15 @@
                     `"${r.phone || ''}"`, 
                     `"${r.breed || ''}"`, 
                     r.weight,
+                    `"${r.clientStatus || ''}"`,
+                    `"${r.referralSource || ''}"`,
+                    `"${r.ageGroup || ''}"`,
+                    `"${r.sizeGroup || ''}"`,
+                    `"${r.previousMurmur || ''}"`,
+                    `"${Array.isArray(r.symptoms) ? r.symptoms.join('、') : ''}"`,
+                    `"${r.fasConcern || ''}"`,
+                    `"${r.visitNotes || ''}"`,
+                    `"${r.followupIntent || ''}"`,
                     `"${r.score || ''}"`,
                     `"${ans.q1 || '未填'}"`,
                     `"${ans.q2 || '未填'}"`,
